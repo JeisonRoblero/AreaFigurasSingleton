@@ -16,29 +16,61 @@ public class CalculadoraServlet extends HttpServlet {
         String figura = request.getParameter("figura");
         double base = Double.parseDouble(request.getParameter("base"));
         double altura = Double.parseDouble(request.getParameter("altura"));
+        String opcion = request.getParameter("opcion");
         double resultado = 0;
 
-        // Calcular el área según la figura seleccionada
+        // Calcular el área o el perímetro según la figura seleccionada
         Calculadora calculadora = Calculadora.getInstancia();
         switch (figura) {
             case "triangulo":
-                resultado = calculadora.calcularAreaTriangulo(base, altura);
+                if (opcion.equals("area")) {
+                    resultado = calculadora.calcularAreaTriangulo(base, altura);
+                } else if (opcion.equals("perimetro")) {
+                    // Obtener la longitud de los otros dos lados del triángulo
+                    double lado2 = Double.parseDouble(request.getParameter("lado2"));
+                    double lado3 = Double.parseDouble(request.getParameter("lado3"));
+                    resultado = calculadora.calcularPerimetroTriangulo(base, lado2, lado3);
+                }
                 break;
             case "cuadrado":
-                resultado = calculadora.calcularAreaCuadrado(base);
+                if (opcion.equals("area")) {
+                    resultado = calculadora.calcularAreaCuadrado(base);
+                } else if (opcion.equals("perimetro")) {
+                    resultado = calculadora.calcularPerimetroCuadrado(base);
+                }
                 break;
             case "rombo":
-                resultado = calculadora.calcularAreaRombo(base, altura);
+                if (opcion.equals("area")) {
+                    resultado = calculadora.calcularAreaRombo(base, altura);
+                } else if (opcion.equals("perimetro")) {
+                    resultado = calculadora.calcularPerimetroRombo(base);
+                }
                 break;
             case "trapecio":
                 double baseMenor = Double.parseDouble(request.getParameter("baseMenor"));
-                resultado = calculadora.calcularAreaTrapecio(base, baseMenor, altura);
+                if (opcion.equals("area")) {
+                    resultado = calculadora.calcularAreaTrapecio(base, baseMenor, altura);
+                } else if (opcion.equals("perimetro")) {
+                    // Obtener la longitud de la base menor y los otros dos lados del trapecio
+                    baseMenor = Double.parseDouble(request.getParameter("baseMenor"));
+                    double lado2 = Double.parseDouble(request.getParameter("lado2"));
+                    double lado3 = Double.parseDouble(request.getParameter("lado3"));
+                    resultado = calculadora.calcularPerimetroTrapecio(base, baseMenor, lado2, lado3);
+                }
                 break;
             case "circulo":
-                resultado = calculadora.calcularAreaCirculo(base);
+                if (opcion.equals("area")) {
+                    resultado = calculadora.calcularAreaCirculo(base);
+                } else if (opcion.equals("perimetro")) {
+                    resultado = calculadora.calcularPerimetroCirculo(base);
+                }
                 break;
             case "rectangulo":
-                resultado = calculadora.calcularAreaRectangulo(base, altura);
+                if (opcion.equals("area")) {
+                    resultado = calculadora.calcularAreaRectangulo(base, altura);
+                } else if (opcion.equals("perimetro")) {
+                    resultado = calculadora.calcularPerimetroRectangulo(base, altura);
+                }
                 break;
         }
 
